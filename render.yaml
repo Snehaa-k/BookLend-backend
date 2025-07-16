@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: book-lending-api
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "cd booklending && gunicorn booklending.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: False
+      - key: DATABASE_URL
+        fromDatabase:
+          name: book-lending-db
+          property: connectionString
+
+databases:
+  - name: book-lending-db
+    databaseName: booklending
+    user: booklending
